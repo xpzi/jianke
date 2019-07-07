@@ -3,6 +3,7 @@
 
 // 分类页
 // https://wcgi.jianke.com/category/api/fullCategories?platform=1
+// https://wcgi.jianke.com/category/api/fullCategories?pid=196&platform=1
 
 module.exports = {
     devServer:{
@@ -11,7 +12,12 @@ module.exports = {
                 target:'https://fe-wcgi.jianke.com',
                 changeOrigin:true,
                 pathRewrite:{'^/jianke':''}
-            }
+            },
+            '/xxx':{
+                target:'https://wcgi.jianke.com',
+                changeOrigin:true,
+                pathRewrite:{'^/xxx':''}
+            }   
         }
     }
 }

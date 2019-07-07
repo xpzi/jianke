@@ -15,17 +15,19 @@
         <div class="content">
              <div class="left-nav">
                  <ul>
-                     <li class="active">男科用药</li>
+                     <li v-for="(item,index) in totalCategories" :key = "item.id" :class="index == curIdx?'active':''" @click="chgCurIdx(index)">
+                         {{item.categoryName}}
+                    </li>
                  </ul>
              </div>
              <div class="right-con">
                  <div class="con-ad">
-                     <img src="https://img.jianke.com/mall/common/201811/4276f3cf28294e77bdf240e0c7edd023.jpg" alt="">
+                     <img :src="curCategory.adImage" alt="">
                  </div>
                  <ul class="item-list">
-                     <li>
-                         <img src="https://img.jianke.com/mall/common/201805/9ecfd485765a4f37a9dde994d45e1d2a.jpg" alt="">
-                         <span>高血压</span>
+                     <li v-for="item in curCategory.list" :key = 'item.id'>
+                         <img :src="item.categoryImage" alt="">
+                         <span>{{item.categoryName}}</span>
                      </li>
                  </ul>
              </div>
@@ -34,20 +36,54 @@
 </template>
 <script>
 import http from '@/utils/http'
+import { Indicator } from 'mint-ui'
 export default {
     data(){
         return {
             totalCategories:[],
+            curCategory:{
+                adImage:'',
+                list: []
+            },
             curIdx:0
         }
     },
+    methods:{
+        async getCurCategoryInfo(){
+            Indicator.open({
+                text: '加载中...',
+                spinnerType: 'fading-circle'
+            })
+            let info = this.totalCategories[this.curIdx]
+            let list = await http.get({url:'/xxx/category/api/fullCategories',params:{pid:info.id,platform:1}})
+            Indicator.close()
+            this.curCategory.adImage = info.adImage
+            this.curCategory.list = list
+        },
+        chgCurIdx(index){
+            this.curIdx = index
+            this.getCurCategoryInfo()
+        },
+
+    },
     async mounted(){
         // 请求分类数据
-        console.log("http>>",http)
-       let result = await http.get({url:'/jianke/category/api/fullCategories',params:{platform:1}})
-       console.log("result>>",result)
-    }
-    
+        Indicator.open({
+            text: '加载中...',
+            spinnerType: 'fading-circle'
+        })
+        let result = await http.get({url:'/xxx/category/api/fullCategories',params:{platform:1}})
+        Indicator.close()
+        this.totalCategories = result
+
+        // 请求第一个分类数据
+        this.getCurCategoryInfo()
+        /*
+            let list = await http.get({url:'/xxx/category/api/fullCategories',params:{pid:result[0].id,platform:1}})
+            this.curCategory.adImage = result[0].adImage//this.$set( this.curCategory, 'list', list)
+            this.curCategory.list = list
+        */
+    },    
 }
 </script>
 

@@ -135,6 +135,7 @@
 <script>
 import AdSwiper from '../../../components/AdSwiper'
 import http from '../../../utils/http'
+import {Indicator} from 'mint-ui'
 export default {
     data(){
         return {
@@ -143,10 +144,15 @@ export default {
         }
     },
     async created(){
+        Indicator.open({
+                text: '加载中...',
+                spinnerType: 'fading-circle'
+            })
         let ret = await http.get({
             url:"/jianke/v1/homepage",
             params:{type:"home",platform:"mobile"}
             })
+        Indicator.close()
         this.floorData = ret
     },
     mounted(){
