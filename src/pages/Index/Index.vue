@@ -19,13 +19,20 @@
 export default {
     data(){
         return {
-            navitems:[
+            isLogin:false,
+            itemsInfo:[
                 {id:"1",to:"/home",name:"首页",icon:'&#xe661;'},
                 {id:"2",to:"/category",name:"分类",icon:'&#xe660;'},
                 {id:"3",to:"/headline",name:"头条",icon:'&#xe65f;'},
                 {id:"4",to:"/carts",name:"购物车",icon:'&#xe65b;'},
-                {id:"5",to:"/aboutme",name:"我",icon:'&#xe65c;'},
+                {id:"5",to:"/account",name:"我",icon:'&#xe65c;'},
                 ],
+        }
+    },
+    computed:{
+        navitems(){
+            this.isLogin?this.$set( this.itemsInfo[4], 'to', "aboutme"):''
+            return this.itemsInfo
         }
     }
 }
@@ -43,7 +50,6 @@ export default {
         flex: 1;
         overflow hidden;
         overflow-y auto;
-        height 0.001rem;
     nav 
         background-color: #fff;
         height: 0.5rem;

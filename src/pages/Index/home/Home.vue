@@ -149,7 +149,7 @@ export default {
                 spinnerType: 'fading-circle'
             })
         let ret = await http.get({
-            url:"/jianke/v1/homepage",
+            url:"/fe-wcgi/v1/homepage",
             params:{type:"home",platform:"mobile"}
             })
         Indicator.close()

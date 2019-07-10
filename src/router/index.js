@@ -8,6 +8,10 @@ import Category from '../pages/Index/category/Category'
 import HeadLine from '../pages/Index/headline/HeadLine'
 import Carts from '../pages/Index/carts/Carts'
 import AboutMe from '../pages/Index/aboutme/AboutMe'
+import Account from '../pages/account/Account'
+import Login from '../pages/account/Login'
+import Register from '../pages/account/Register'
+import ForgetPwd from '../pages/account/ForgetPwd'
 
 import Details from '../pages/details/Details'
 
@@ -42,7 +46,7 @@ let routes = [
             {
                 path:'/aboutme',
                 name:'aboutme',
-                component:AboutMe
+                component:AboutMe,
             }
         ]
     },
@@ -50,6 +54,29 @@ let routes = [
         path:'/details/:id',
         name:'details',
         component:Details
+    },
+    {
+        path:'/account',
+        name:'account',
+        redirect:'/account/login',
+        component:Account,
+        children:[
+            {
+                path:'/account/login',
+                name:'login',
+                component:Login,
+            },
+            {
+                path:'/account/register',
+                name:'register',
+                component:Register,
+            },
+            {
+                path:'/account/forgetpwd',
+                name:'forgetpwd',
+                component:ForgetPwd,
+            },
+        ]
     }
 ]
 

@@ -1,7 +1,7 @@
 <template>
     <div class="category-con">
         <div class="header">
-            <i  class="iconfont icon-back">&#xe65f;</i> 
+            <i  class="iconfont icon-back" @click='goHome'>&#xe65f;</i> 
             <span>全部分类</span>
             <i class="iconfont icon-more">&#xe65f;</i>
         </div>
@@ -55,7 +55,7 @@ export default {
                 spinnerType: 'fading-circle'
             })
             let info = this.totalCategories[this.curIdx]
-            let list = await http.get({url:'/xxx/category/api/fullCategories',params:{pid:info.id,platform:1}})
+            let list = await http.get({url:'/wcgi/category/api/fullCategories',params:{pid:info.id,platform:1}})
             Indicator.close()
             this.curCategory.adImage = info.adImage
             this.curCategory.list = list
@@ -64,6 +64,9 @@ export default {
             this.curIdx = index
             this.getCurCategoryInfo()
         },
+        goHome(){
+            this.$router.push("/home") 
+        }
 
     },
     async mounted(){
@@ -72,14 +75,14 @@ export default {
             text: '加载中...',
             spinnerType: 'fading-circle'
         })
-        let result = await http.get({url:'/xxx/category/api/fullCategories',params:{platform:1}})
+        let result = await http.get({url:'/wcgi/category/api/fullCategories',params:{platform:1}})
         Indicator.close()
         this.totalCategories = result
 
         // 请求第一个分类数据
         this.getCurCategoryInfo()
         /*
-            let list = await http.get({url:'/xxx/category/api/fullCategories',params:{pid:result[0].id,platform:1}})
+            let list = await http.get({url:'/wcgi/category/api/fullCategories',params:{pid:result[0].id,platform:1}})
             this.curCategory.adImage = result[0].adImage//this.$set( this.curCategory, 'list', list)
             this.curCategory.list = list
         */

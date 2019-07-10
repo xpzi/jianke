@@ -1,5 +1,3 @@
 <template>
-    <div class="aboutme-con">
-        我是aboutme
-    </div>
+    <div>这是我的界面</div>
 </template>
