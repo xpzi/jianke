@@ -10,7 +10,7 @@
             <div class="logo-wrap">
                 <i class="logo-icon iconfont" >&#xe65f;&#xe65f;</i>
             </div>
-            <div class="search-box">
+            <div class="search-box" @click="jumpSearch">
                 <i class="minor-icon iconfont">&#xe660;</i>
                 
                 <input type="text" placeholder="纷乐 满399减20">
@@ -181,7 +181,11 @@ export default {
     methods:{
            closeAd(){
               this.isShowAd = false 
-           } 
+           },
+           jumpSearch(){
+               this.$router.push({ name: 'search', params: { keywords: '纷乐' }})
+           }
+
     },
     computed:{
         adSwiperData(){

@@ -148,10 +148,6 @@ export default {
                 border-radius 5px
                 text-align center
                 line-height (0.666*0.45)rem
-
-                    
-            
-
         .content
             flex 1
             display flex
