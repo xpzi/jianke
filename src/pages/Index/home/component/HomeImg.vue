@@ -1,6 +1,6 @@
 <template>
-    <a href="data[0].action" class="home-img" >
-        <img src="data[0].headImg">
+    <a class="title-box" :href="data[0].action" >
+        <img :src="data[0].headImg">
     </a>
 </template>
 <script>
@@ -12,15 +12,13 @@ export default {
             return this.data;
         }
     }
+
     
 }
 </script>
 <style lang="stylus" scoped>
 @import '~@/assets/styles/ellipsis.styl'
-.home-img
-    height 44px
-
+.title-box
     img
-        height 44px
-        
+        width 100%    
 </style>
