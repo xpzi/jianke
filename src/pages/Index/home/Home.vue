@@ -19,19 +19,19 @@
         </div>
         <!-- 搜索框 end -->
 
-        <!-- 轮播图 start -->
-        <ad-swiper :adSwiperData="adSwiperData"></ad-swiper>
-        <!-- 轮播图 end -->
+        <template v-for="(floor, index) in floorData">
+            <component v-if="component[floor.floorTemplateName]" v-bind:is="component[floor.floorTemplateName]" :key="index" :data="floor.rooms"></component>
+        </template>
 
         <!-- 首页导航 start -->
-        <ul  class="home-nav" >
+        <!-- <ul  class="home-nav" >
             <li v-for="item in homeNavData" :key="item.headImg">
                 <a :href="item.action">
                     <img :src="item.headImg" alt="">
                     <span>{{item.roomTitle}}</span>
                 </a>
             </li>
-        </ul>
+        </ul> -->
         <!-- 首页导航 end -->
 
         <!-- 头条轮播 start -->
@@ -136,9 +136,12 @@
 import AdSwiper from '../../../components/AdSwiper'
 import http from '../../../utils/http'
 import {Indicator} from 'mint-ui'
+import SwiperBox from './component/SwiperBox'
+import * as component from './component/index.js'
 export default {
     data(){
         return {
+            component,
             isShowAd:true,
             floorData:[],
         }
@@ -202,7 +205,7 @@ export default {
         },
         chooseDataPart2Right(){
             if(this.floorData[4] && this.floorData[4].rooms){
-                return [this.floorData[4].rooms[1],this.floorData[4].rooms[2]]
+                return this.floorData[4].rooms.slice(1,2)
             }else{
                 return []
             }
@@ -252,8 +255,9 @@ export default {
         }            
     },
     components:{
-        AdSwiper
-    }
+        AdSwiper,
+        // SwiperBox
+    },
 }
 </script>
 
@@ -319,30 +323,6 @@ export default {
                 width .35rem
                 height .14rem
                 text-align center
-        .home-nav
-            display flex
-            flex-wrap wrap
-            justify-content center
-            align-items center
-            background-color #fff
-            padding .05rem 0 .1rem 0
-            height 1.79rem
-            li
-                display flex
-                align-items center
-                justify-content  center
-                width 25%
-                height .82rem
-                padding-top .1rem
-                img 
-                    width .4rem
-                    height .4rem
-                    margin .05rem
-                span 
-                    display block
-                    text-align center
-                    color #000
-                    font-size 12px
         .newsSwiper
             display flex
             padding .05rem .15rem
