@@ -28,7 +28,7 @@ import HeadImgItem from '@/components/HeadImgItem'
 import MutiImgItem from '@/components/MutiImgItem'
 import OneImgItem from '@/components/OneImgItem'
 import OneVideoItem from '@/components/OneVideoItem'
-import {Indicator} from 'mint-ui'
+import {Indicator,Toast} from 'mint-ui'
 import BScroll from 'better-scroll'
 
 export default {
@@ -40,6 +40,7 @@ export default {
     },
     async created(){
         this.page = 1
+        this.maxPage = 5
         Indicator.open()
         let programs = await http.get({url:'/jktt-api/m/programs'})
         this.programs = [...this.programs,...programs.data]
@@ -95,37 +96,70 @@ export default {
                 return false
             }
         },
+        async loadData(type){
+            // type refresh 刷新;more 更多
+            if(this.page >= this.maxPage){
+                Toast({
+                    message: '已经到最底部',
+                    position: 'bottom',
+                    duration: 500
+                })
+                return
+            }
+
+            Indicator.open()
+            let res = await http.get(this.getParams(this.curIndex))
+            let data = res.data && res.data.datalist || {}
+            if(type == 'refresh'){
+                this.curData = data
+                this.maxPage = res.totalpage || 5
+            }else if(type == 'more'){
+                this.curData = [...this.curData,...data]
+            }else{
+                this.curData = data
+            }
+            Indicator.close()
+
+        },
 
         async switchItem(idx){
             if(this.curIndex == idx) return
 
             this.page = 1
             this.curIndex = idx
-            Indicator.open()
-            let res = await http.get(this.getParams(idx))
-            this.curData = res.data && res.data.datalist || {}
-            Indicator.close()
+            this.loadData('refresh')
         }
     },
     mounted(){
         let that = this
+        console.log("11111")
         let bscroll = new BScroll('.content-wrap',{
-            pullUpLoad:true,
             click:true,
+            scrollY: true,
+            pulldownUI:true,
+            pullUpLoad:{
+                 threshold: -30, // 当上拉距离超过30px时触发 pullingUp 事件
+            },
+            pullDownRefresh: {
+                threshold: 30, // 下拉距离超过30px触发pullingDown事件
+                stop: 40 // 回弹停留在距离顶部20px的位置
+             }
         })
-
+         console.log("2222")
+        bscroll.on('pullingDown',async function(){
+            that.page = 1
+            that.loadData('refresh')
+            that.$nextTick(()=>{
+                this.refresh()
+                this.finishPullDown()
+            })
+        })
         bscroll.on('pullingUp',async function(){
-            console.log("pullingUp")
             that.page++
-            Indicator.open()
-            let res = await http.get(that.getParams(that.curIndex))
-            let data = res.data && res.data.datalist || {}
-            that.curData = [...that.curData,...data]
-            
+            that.loadData('more')
             that.$nextTick(()=>{
                 this.refresh()
                 this.finishPullUp()
-                Indicator.close()
             })
 
         })        

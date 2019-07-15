@@ -12,6 +12,7 @@ import Account from '../pages/account/Account'
 import Login from '../pages/account/Login'
 import Register from '../pages/account/Register'
 import ForgetPwd from '../pages/account/ForgetPwd'
+import Search from '../pages/search/Search'
 
 import Details from '../pages/details/Details'
 
@@ -54,6 +55,11 @@ let routes = [
         path:'/details/:id',
         name:'details',
         component:Details
+    },
+    {
+        path:'/search',
+        name:'search',
+        component:Search
     },
     {
         path:'/account',
